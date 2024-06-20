@@ -4,7 +4,7 @@ OSC ports are set by default ! QLab is listening on Port 53000 and sending Feedb
 
 This Module gives extended Remote-Control on QLab. And you'll get Feedback for Cue-Lists, Cue-Names, and Cue-Colors etc etc...   
 As the CueName-Container is handled dynamically (only as much lines as there are Cues in the CueList are created and shown), it is important that you sync the session, save it and reload it every time you change the QLab Project (Workspace); and also when a new QLab-OSC module is inserted in a Chataigne-Session !   
-Shortcuts are cmd-S for Save and cmd-shift-O dor Reload !
+Shortcuts are cmd-S for Save and cmd-shift-O for Reload !
 
 ### Actual Version is 1.3
 I will add some more features in the future?
