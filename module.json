@@ -4,7 +4,7 @@
 	"path": "Software",
 	
 	"version":"1.3",
-  "description":"Allow you to control QLab with Chataigne",
+  "description":"Allows you to control QLab with Chataigne",
   "url":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module",
   "downloadURL":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module/archive/refs/heads/main.zip",
 	
@@ -58,7 +58,7 @@
 			{
 				"type":"Trigger",
 				"description":"Click to Sync and request infos from Q-Lab"
-			},
+			}
 			
 	},
 	
