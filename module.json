@@ -1,0 +1,314 @@
+{
+	"name": "QLab OSC Advanced",
+	"type": "OSC",
+	"path": "Software",
+	
+	"version":"1.3",
+  "description":"Allow you to control QLab with chataigne",
+  "url":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module",
+  "downloadURL":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module/archive/refs/heads/main.zip",
+	
+	"hasInput": true,
+	"hasOutput": true, 
+
+	"hideDefaultCommands": false,
+	"hideDefaultParameters": [
+	"colorSendMode",
+		"autoRange",
+		"autoFeedback",
+		"pass_through",
+		"input",
+		"outputs",
+		"useHierarchy",
+		"colorSendMode",
+		"booleanSendMode" ],
+	
+	"defaults": {
+	
+		"OSC Input": {
+			"localPort" : 53001 },
+			
+		"OSC Outputs": {
+			"OSC Output": {
+				"local" : false,
+				"remotePort" : 53000,
+				"listenToFeedback":false } }
+	},
+	
+	"parameters": {
+			"Advice":
+			{ "type": "String",
+			"multiline" : true,
+			"readOnly" : true , 
+			"description":"After you inserted a new QLab-Module or  loaded a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !",
+			"default":"After you inserted a new QLab-Module or when loaded a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !" },
+				
+			"Workspace ID":
+			{
+				"type":"String",
+				"readOnly": true ,
+				"description":"Set the Workspace ID or Name" 
+			},
+			"Number of Cues":
+			{
+				"type":"Integer",
+				"description":"Count of Cues"
+			},
+			"Sync":
+			{
+				"type":"Trigger",
+				"description":"Click to Sync and request infos from Q-Lab"
+			},
+			"Permanent Feedback":
+			{
+				"type":"Boolean",
+				"description":"Activate permanent infos from Q-Lab",
+				"default": true
+			}
+	},
+	
+	"scripts": ["qlab.js"],
+	
+	"values": {
+			"Workspace ID":
+			{
+				"type":"String",
+				"description":"Set the Workspace ID or Name" 
+			}
+	 },
+	
+	
+	
+	"commands": {
+		
+	"Go" : {
+			"menu" : "Cue Control",
+			"callback" : "go"
+		},
+		
+	"Pause" : {
+			"menu" : "Cue Control",
+			"callback" : "pause"
+		},	
+		
+	"Continue" : {
+			"menu" : "Cue Control",
+			"callback" : "resume"
+		},
+		
+	"Stop Cue" : {
+			"menu" : "Cue Control",
+			"callback" : "stop_cue",
+			"parameters" : {
+			
+			" Stop Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },	
+		
+	"Previous Cue" : {
+			"menu" : "Cue Control",
+			"callback" : "back"
+		},
+		
+	"Next Cue" : {
+			"menu" : "Cue Control",
+			"callback" : "next"
+		},
+		
+	"Stop Playlist" : {
+			"menu" : "Cue Control",
+			"callback" : "stop_play"
+		},			
+		
+	"Stop All" : {
+			"menu" : "Cue Control",
+			"callback" : "stop_all"
+		},		
+				
+	"Load Cue" : {
+			"menu" : "Cue Control",
+			"callback" : "set_next",
+			"parameters" : {
+			
+			" Load Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },	
+		
+	"Start Cue" : {
+			"menu" : "Cue Control",
+			"callback" : "start_next",
+			"parameters" : {
+			
+			" Start Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Rename Cue" : {
+			"menu" : "Cue Actions",
+			"callback" : "rename_cue",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"New Name": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Renumber Cues" : {
+			"menu" : "Cue Actions",
+			"callback" : "renumber_cue",
+			"parameters" : {
+			
+			"Set Workspace": {
+					"type": "String",
+					"useForMapping": true },
+					
+			"Start Number": {
+					"type": "Integer",
+					"default": 1, 
+					"min":1,
+					"max":5,
+					"useForMapping": true },
+					
+			"Increment Number": {
+					"type": "Integer",
+					"default": 1, 
+					"min":1,
+					"max":5,
+					"useForMapping": true }					
+		}  },
+				
+	"Reset Playlist" : {
+			"menu" : "Cue Control",
+			"callback" : "reset"
+		},
+		
+	"Prewait" : {
+			"menu" : "Cue Control",
+			"callback" : "prewait_act",
+			"parameters" : {
+				
+				"Set Pre Time": {
+					"type": "Float",
+					"ui":"time",
+					"default": 0, 
+					"min":0,
+					"max":15,
+					"useForMapping": true } 
+			}  },
+			
+	"Postwait" : {
+			"menu" : "Cue Control",
+			"callback" : "postwait_act",
+			"parameters" : {
+				
+				"Set Post Time": {
+					"type": "Float",
+					"ui":"time",
+					"default": 0, 
+					"min":0,
+					"max":15,
+					"useForMapping": true } 
+			}  },
+		
+	"Active Cue" : {
+			"menu" : "Cue Feedback",
+			"callback" : "active_cue"
+		},
+		
+	"Selected Cue" : {
+			"menu" : "Cue Feedback",
+			"callback" : "selected_cue"
+		},
+		
+	"Playhead Cue" : {
+			"menu" : "Cue Feedback",
+			"callback" : "playhead_cue"
+		},
+		
+	"Active & Next Cue" : {
+			"menu" : "Cue Feedback",
+			"callback" : "request_activecue"
+		},
+		
+		
+	"Volumes db" : {
+			"menu" : "Volume",
+			"callback" : "actVol_at",
+			"parameters" : {
+				
+				"Volume db": {
+					"type": "Float",
+					"default": 0, 
+					"min":-30,
+					"max":12,
+					"useForMapping": true } 
+			}  },	
+		
+	"Volume 0db" : {
+			"menu" : "Volume",
+			"callback" : "actVol_nominal"
+		},	
+		
+	"Volume Off" : {
+			"menu" : "Volume",
+			"callback" : "actVol_off"
+		},		
+		
+	"Volume Full" : {
+			"menu" : "Volume",
+			"callback" : "actVol_full"
+		},
+		
+	"Request Cue Names" : {
+			"menu" : "Requests",
+			"callback" : "request_names"
+		},
+		
+	"Request Sel Cue" : {
+			"menu" : "Requests",
+			"callback" : "request_selcue"
+		},
+		
+	"Request Cuelists" : {
+			"menu" : "Requests",
+			"callback" : "request_cuelists"
+		},	
+		
+	"Request Unique IDs" : {
+			"menu" : "Requests",
+			"callback" : "request_uniqueids"
+		},	
+					
+	"Reply Always" : {
+			"menu" : "Requests",
+			"callback" : "reply",
+			"parameters" : {
+				
+				"ON/OFF": {
+					"type":"Enum",
+					"options": {
+						"Start" : 1,
+						"Stop" : 0 } }
+			}  },			
+		
+	"Updates" : {
+			"menu" : "Requests",
+			"callback" : "updates",
+			"parameters" : {
+				
+				"ON/OFF": {
+					"type":"Enum",
+					"options": {
+						"Start" : 1,
+						"Stop" : 0 } }
+			}   }
+
+	
+	}
+}
