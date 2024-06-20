@@ -4,7 +4,7 @@
 	"path": "Software",
 	
 	"version":"1.3",
-  "description":"Allow you to control QLab with chataigne",
+  "description":"Allow you to control QLab with Chataigne",
   "url":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module",
   "downloadURL":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module/archive/refs/heads/main.zip",
 	
@@ -40,8 +40,8 @@
 			{ "type": "String",
 			"multiline" : true,
 			"readOnly" : true , 
-			"description":"After you inserted a new QLab-Module or  loaded a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !",
-			"default":"After you inserted a new QLab-Module or when loaded a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !" },
+			"description":"After you've inserted a new QLab-Module or  loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !",
+			"default":"After you've inserted a new QLab-Module or when loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !" },
 				
 			"Workspace ID":
 			{
@@ -59,12 +59,7 @@
 				"type":"Trigger",
 				"description":"Click to Sync and request infos from Q-Lab"
 			},
-			"Permanent Feedback":
-			{
-				"type":"Boolean",
-				"description":"Activate permanent infos from Q-Lab",
-				"default": true
-			}
+			
 	},
 	
 	"scripts": ["qlab.js"],

@@ -31,13 +31,14 @@ function init() {
 // 						VALUES CONTAINERS
 // =====================================================================
 
-	cuelistCount = local.values.addIntParameter("CueList Count","Number of Cues", 0, 0);
-	cuesNoInfo = local.values.addIntParameter("Cues Count","Number of Cues", 0, 0);
-	showCL=local.values.addIntParameter("Show CueList", "Show CueList" , 1);
+	cuelistCount = local.values.addIntParameter("CueList Count","Number of Cues",0);
+	cuesNoInfo = local.values.addIntParameter("Cues Count","Number of Cues",0,0);
+//	showCL=local.values.addIntParameter("Show CueList", "Show CueList",0,0,10);
 	nextId = local.values.addStringParameter("Next Cue ID","", "");
 	nextCue = local.values.addStringParameter("Next Cue","Next Cue", "Next Cue");	
 	activeCue = local.values.addStringParameter("Active Cue","Active Cue", "Active Cue");
 //	syncAll = local.values.addTrigger("Sync", "Request Infos" , false);
+
 	
 // =====================================================================
 // 						CREATE CONTAINERS
@@ -48,9 +49,9 @@ function init() {
 		cues.setCollapsed(true);
 		cues.addTrigger("Reset Cue Names", "Reset Cue Names" , false);
 		cues.addTrigger("Sync Cue Names", "Get Names from Q-Lab" , false);
-		cues.addIntParameter("Number of CueLists", "Number of CueLists from Q-Lab" , 1);
-		cues.addIntParameter("Number of Cues", "Number of Cues from Q-Lab" , 1);
-		cues.addIntParameter("Show CueList", "Show CueList" , 1);
+		cues.addIntParameter("Number of CueLists", "Number of CueLists from Q-Lab" , 0);
+		cues.addIntParameter("Number of Cues", "Number of Cues from Q-Lab" , 0);
+		cues.addIntParameter("Show CueList", "Show CueList",0,0,10);
 		cues.addStringParameter("CueList Name", "Name of the Cuelist", "");
 		read = cues.addStringParameter(" ", "", "Cues Names");
 		read.setAttribute("readOnly" ,true);
@@ -103,27 +104,33 @@ function keepAlive() {
 //							 VALUE CHANGE EVENTS
 //========================================================================
 
-function moduleValueChanged(param) { 
+function moduleValueChanged(value) { 
 
-	if (param.name == "syncCueNames"){
+	if (value.name == "syncCueNames"){
 	local.send ("/cueLists") ;	
 	}
 	
-	if (param.name == "resetCueNames"){
+	if (value.name == "resetCueNames"){
 	local.values.cueNames.cueListName.set("");
  	for (n=1 ; n<=cuecount ; n++)
  	{var child = "cue"+n ;
 	local.values.cueNames.getChild(child).set("");}
 	}
 	
-	if (param.name == "sync"){
+	if (value.name == "sync"){
 	local.send ("/alwaysReply" ,1) ;
-//	local.send ("/updates", 1) ;
 	local.send ("/cueLists") ;
 	local.send("/cue/selected/name") ;
 //	local.send("/cue/active/name") ;
 //	local.send("/cue/playhead/name") ;
 	}
+
+// delete older Cue-Names	
+	if (value.name == "showCueList"){
+	var count = local.values.cueNames.numberOfCues.get();
+	for (n=1 ; n<=count ; n++)
+ 	{var child = "cue"+n ;
+	local.values.cueNames.getChild(child).set("");}  }
 	
 	
 }	
@@ -168,17 +175,19 @@ function oscEvent(address, args) {
 // >>>>>>> Get and Set  Cue Infos
 	if (local.match(address,"/reply/workspace/*/cueLists")) {	
 	var parse = JSON.parse(args[0]) ;
+	// set CueListNumber
+	var cln = local.values.cueNames.showCueList.get() ;
 	// get CueLists-Number
 	var lnumb = parse.data.length ;
 	local.values.cueNames.numberOfCueLists.set(lnumb);
 	local.values.cueListCount.set(lnumb);
 	// get Cues-Number
-	var numb = parse.data[0].cues.length ;
+	var numb = parse.data[cln].cues.length ;
 	local.values.cueNames.numberOfCues.set(numb);
 	local.values.cuesCount.set(numb);
 	local.parameters.numberOfCues.set(numb);
 	//  insert CueList Name
-	var listname = parse.data[0].listName ;
+	var listname = parse.data[cln].listName ;
 	local.values.cueNames.cueListName.set(listname);
 	//  insert Workspace ID
 	var workspace = parse.workspace_id ;
@@ -188,9 +197,9 @@ function oscEvent(address, args) {
 	//  insert Cue Names 
 	for (n=0 ; n<numb ; n++) {
 	var no =n+1 ;	
-		var cuename = parse.data[0].cues[n].name ;
-		var cuenumber = parse.data[0].cues[n].number ;
-		var cuecolor = parse.data[0].cues[n].colorName ;
+		var cuename = parse.data[cln].cues[n].name ;
+		var cuenumber = parse.data[cln].cues[n].number ;
+		var cuecolor = parse.data[cln].cues[n].colorName ;
 		if (cuecolor == "none") { cuecolor = "" ;}
 		else {cuecolor = " - "+cuecolor ;}
 		var fullname = cuenumber+" - "+cuename +cuecolor ;	
