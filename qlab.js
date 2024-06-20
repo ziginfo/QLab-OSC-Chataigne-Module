@@ -26,7 +26,7 @@ function init() {
 		
 // Insert Parameter Buttons & Infos======>>>>>>>>>>>>>>>>>>>>>>>>
 
-	permFb = local.parameters.addBoolParameter("Permanent Feedback", "Get Permanent Feedback from QLab" , false);
+	permFb = local.parameters.addBoolParameter("Permanent Feedback", "Get Permanent Feedback from QLab" , true);
 // =====================================================================
 // 						VALUES CONTAINERS
 // =====================================================================
