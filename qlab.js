@@ -17,7 +17,7 @@ var cueColors = ["none","berry","blue","crimson","cyan","forest","gray","green",
 
 
 //====================================================================
-//						INITIAL FUNCTIONS 
+//		INITIAL FUNCTIONS 
 //====================================================================
 
 //  initial functions
@@ -28,7 +28,7 @@ function init() {
 
 	permFb = local.parameters.addBoolParameter("Permanent Feedback", "Get Permanent Feedback from QLab" , true);
 // =====================================================================
-// 						VALUES CONTAINERS
+// 		VALUES CONTAINERS
 // =====================================================================
 
 	cuelistCount = local.values.addIntParameter("CueList Count","Number of Cues",0);
@@ -41,7 +41,7 @@ function init() {
 
 	
 // =====================================================================
-// 						CREATE CONTAINERS
+// 		CREATE CONTAINERS
 // =====================================================================
 	
 // >>>>>>  Names Container >>>>>>>>>>>>>>>>>>>>>>		
@@ -81,7 +81,7 @@ function init() {
 }
 
 //========================================================================
-//							 HELPER
+//		HELPER
 //========================================================================
 
 function update(deltaTime) {
@@ -101,7 +101,7 @@ function keepAlive() {
 }
 
 //========================================================================
-//							 VALUE CHANGE EVENTS
+//		VALUE CHANGE EVENTS
 //========================================================================
 
 function moduleValueChanged(value) { 
@@ -136,7 +136,7 @@ function moduleValueChanged(value) {
 }	
 
 //========================================================================
-//							 PARAMETER CHANGE EVENTS
+//		PARAMETER CHANGE EVENTS
 //========================================================================
 
 function moduleParameterChanged(param) { 
@@ -146,7 +146,7 @@ function moduleParameterChanged(param) {
 }	
 
 //============================================================
-//							OSC EVENTS
+//		OSC EVENTS
 //============================================================
 
 function oscEvent(address, args) { 
@@ -214,14 +214,14 @@ function oscEvent(address, args) {
 
 
 //=========================================================
-//							 REQUESTS
+//		REQUESTS
 //=========================================================
 
 
 
 
 //=========================================================
-//					 REGULAR FUCNTIONS
+//		REGULAR FUCNTIONS
 //=========================================================
 
 // >>>>>>> CUE CONTROL
