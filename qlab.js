@@ -59,10 +59,12 @@ function update(deltaTime) {
 function keepAlive() {
 		if (permFb.get()) {
 		local.send ("/cueLists") ;
-		local.send("/cue/selected/name") ;}
+		local.send ("/runningCues/shallow") ;
+		local.send ("/selectedCues/shallow") ;
+//		local.send("/cue/selected/name") ;
 //		local.send ("/alwaysReply" ,1) ;
 //		local.send ("/updates" ,1) ;
-		
+		}
 }
 
 //========================================================================
@@ -83,9 +85,11 @@ function moduleValueChanged(value) {
 	}
 	
 	if (value.name == "sync"){
-	local.send ("/alwaysReply" ,1) ;
-	local.send ("/cueLists") ;
-	local.send("/cue/selected/name") ;
+	local.send ("/runningCues/shallow") ;
+	local.send ("/selectedCues/shallow") ;
+//	local.send ("/alwaysReply" ,1) ;
+//	local.send ("/cueLists") ;
+//	local.send("/cue/selected/name") ;
 //	local.send("/cue/active/name") ;
 //	local.send("/cue/playhead/name") ;
 	}
@@ -138,17 +142,24 @@ function oscEvent(address, args) {
 	local.values.workspaceID.set(parse);
 	local.values.cueNames.list.set(workspace);
 	}
-*/
-		
-// >>>>>>>>>Get and Set selected and active Cue
-	if (local.match(address,"/reply/cue_id/*/name")) {	
+*/	
+
+// >>>>>>>>> Get and Set selected and playing Cue
+	if (local.match(address,"/reply/workspace/*/runningCues/shallow")) {
 	var parse = JSON.parse(args[0]) ;
-		var name = parse.data ;
-		var id = parse.address ;
-		id = id.replace("/cue_id/","") ;
-		id = id.replace("/name","") ;
-	local.values.nextCue.set(name);
-	local.values.nextCueID.set(id) ;
+	var numb = parse.data[1].number ;
+	var name = parse.data[1].name ;
+	liname = numb+" - "+name ;
+	if (name == null) {liname= "no playing Cue !" ;}
+	local.values.playingCue.set(liname);
+	}
+	if (local.match(address,"/reply/workspace/*/selectedCues/shallow")) {
+	var parse = JSON.parse(args[0]) ;
+	var numb = parse.data[0].number ;
+	var name = parse.data[0].name ;
+	liname = numb+" - "+name ;
+	if (name == null) {liname= "no selected Cue !" ;}
+	local.values.nextCue.set(liname);
 	}
 		
 // >>>>>>> Get and Set  Cue Infos
@@ -197,7 +208,9 @@ function oscEvent(address, args) {
 //		 REQUESTS
 //=========================================================
 
-
+function show_playing() {
+	local.send("/cue/active/name") ;	
+}
 
 
 //=========================================================
@@ -231,11 +244,15 @@ function next() {
 }
 
 function stop_play() {
-	local.send("/panicinTime") ;	
+	local.send("/panicInTime") ;	
 }
 
 function stop_all() {
 	local.send("/panic") ;	
+}
+
+function stop_intime(time) {
+	local.send("/panicInTime", time) ;	
 }
 
 function set_next(cue) {
@@ -285,8 +302,12 @@ function rename_cue(cue, name) {
 	local.send("/cue/"+cue+"/name", name);	
 }
 
-function renumber_cues(work, val1, val2) {
-	local.send("/workspace/"+work+"/renumber", [val1, val2]) ;
+function renumber_cue(cue, numb) {
+	local.send("/cue/"+cue+"/number", numb);	
+}
+
+function renumber_allcues(val1, val2) {
+	local.send("/renumber", [val1, val2]) ;
 }
 
 // >>>>>>>>>>> AUDIO VOLUME
@@ -335,10 +356,3 @@ function updates(val) {
 	local.send("/updates", val);	
 }
 
-function now_playing() {
-	local.send("/mix16apps/playlist/playingcue");	
-}
-
-function next_playing() {
-	local.send("/mix16apps/playlist/nextcue");	
-}
