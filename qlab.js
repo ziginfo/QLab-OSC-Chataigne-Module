@@ -3,8 +3,8 @@
 var myParameters = {};
 var myValues = {};
 var workspace_name = local.parameters.workspaceID.get() ;
-var workspaceNo = local.values.workspaceID.get() ;
 var cuecount = local.parameters.numberOfCues.get()  ;
+var workspaceNo = local.values.workspaceID.get() ;
 var permFb  ;
 var names = [];
 var requests = [];
@@ -26,57 +26,22 @@ function init() {
 		
 // Insert Parameter Buttons & Infos======>>>>>>>>>>>>>>>>>>>>>>>>
 
-	permFb = local.parameters.addBoolParameter("Permanent Feedback", "Get Permanent Feedback from QLab" , true);
+	permFb = local.parameters.addBoolParameter("Permanent Feedback", "Get Permanent Feedback from QLab" , false);
 // =====================================================================
 // 		VALUES CONTAINERS
 // =====================================================================
 
-	cuelistCount = local.values.addIntParameter("CueList Count","Number of Cues",0);
-	cuesNoInfo = local.values.addIntParameter("Cues Count","Number of Cues",0,0);
-//	showCL=local.values.addIntParameter("Show CueList", "Show CueList",0,0,10);
-	nextId = local.values.addStringParameter("Next Cue ID","", "");
-	nextCue = local.values.addStringParameter("Next Cue","Next Cue", "Next Cue");	
-	activeCue = local.values.addStringParameter("Active Cue","Active Cue", "Active Cue");
-//	syncAll = local.values.addTrigger("Sync", "Request Infos" , false);
 
 	
 // =====================================================================
 // 		CREATE CONTAINERS
 // =====================================================================
-	
-// >>>>>>  Names Container >>>>>>>>>>>>>>>>>>>>>>		
-	cues=local.values.addContainer("Cue Names");
-		cues.setCollapsed(true);
-		cues.addTrigger("Reset Cue Names", "Reset Cue Names" , false);
-		cues.addTrigger("Sync Cue Names", "Get Names from Q-Lab" , false);
-		cues.addIntParameter("Number of CueLists", "Number of CueLists from Q-Lab" , 0);
-		cues.addIntParameter("Number of Cues", "Number of Cues from Q-Lab" , 0);
-		cues.addIntParameter("Show CueList", "Show CueList",0,0,10);
-		cues.addStringParameter("CueList Name", "Name of the Cuelist", "");
-		read = cues.addStringParameter(" ", "", "Cues Names");
-		read.setAttribute("readOnly" ,true);
-//		if (cuecount == 0) { cuecount=50 ;}
-		for (var n = 1; n <= cuecount; n++) {
-			cues.addStringParameter("Cue "+n, "", ""); 
-			}
-
-/*			
-// >>>>>>  Cue Number Container >>>>>>>>>>>>>>>>>>>>>>		
-	cues=local.values.addContainer("Cue Numbers");
-		cues.setCollapsed(true);
-		cues.addTrigger("Reset Cue Numbers", "Reset Cue Names" , false);
-		cues.addTrigger("Sync Cue Numbers", "Get Names from Q-Lab" , false);
-		cues.addIntParameter("Number of Cues", "Number of Names from Q-Lab" , 1);
-		cues.addStringParameter("CueList Numbers", "Name of the Cuelist", "");
-		read = cues.addStringParameter(" ", "", "Cues Numbers");
-		read.setAttribute("readOnly" ,true);
-//		if (cuecount == 0) { cuecount=50 ;}
-		for (var n = 1; n <= cuecount; n++) {
-			cues.addStringParameter("Cue "+n, "", ""); 
-			}						
-*/
 
 
+
+//		local.values.cueNames.countOfCueList.set(10) ;
+//		local.values.cueNames.activeCueList.set(0) ;
+//		local.values.cueNames.numberOfCues.set(20) ;
 			
 }
 
@@ -101,12 +66,12 @@ function keepAlive() {
 }
 
 //========================================================================
-//		VALUE CHANGE EVENTS
+//		 VALUE CHANGE EVENTS
 //========================================================================
 
 function moduleValueChanged(value) { 
-
 	if (value.name == "syncCueNames"){
+	
 	local.send ("/cueLists") ;	
 	}
 	
@@ -125,18 +90,32 @@ function moduleValueChanged(value) {
 //	local.send("/cue/playhead/name") ;
 	}
 
+// Reset CuelistCount	
+	if (value.name == "countOfCueLists"){
+	var clcount = local.values.cueNames.countOfCueLists.get();
+	if (clcount == 1) {
+	local.values.cueNames.activeCueList.set(0);}  }
+	
 // delete older Cue-Names	
-	if (value.name == "showCueList"){
+	if (value.name == "activeCueList"){
 	var count = local.values.cueNames.numberOfCues.get();
 	for (n=1 ; n<=count ; n++)
  	{var child = "cue"+n ;
 	local.values.cueNames.getChild(child).set("");}  }
 	
+//  create Cue-Name-Lines
+	if (value.name == "activeCueList" || value.name == "syncCueNames" || value.name == "numberOfCues"){
+	cuecount = local.values.cueNames.numberOfCues.get()  ;
+//	local.values.cueNames.test.set(value.val) ;
+	for (var n = 1; n <= cuecount; n++) {
+			local.values.cueNames.addStringParameter("Cue "+n, "", "");  } }
+
+	
 	
 }	
 
 //========================================================================
-//		PARAMETER CHANGE EVENTS
+//		 PARAMETER CHANGE EVENTS
 //========================================================================
 
 function moduleParameterChanged(param) { 
@@ -175,26 +154,27 @@ function oscEvent(address, args) {
 // >>>>>>> Get and Set  Cue Infos
 	if (local.match(address,"/reply/workspace/*/cueLists")) {	
 	var parse = JSON.parse(args[0]) ;
-	// set CueListNumber
-	var cln = local.values.cueNames.showCueList.get() ;
-	// get CueLists-Number
+// set CueListNumber
+	var cln = local.values.cueNames.activeCueList.get() ;
+// get CueLists-Number
 	var lnumb = parse.data.length ;
-	local.values.cueNames.numberOfCueLists.set(lnumb);
-	local.values.cueListCount.set(lnumb);
-	// get Cues-Number
+	local.values.cueNames.countOfCueLists.set(lnumb);
+	local.parameters.numberOfCueLists.set(lnumb);
+//	local.values.cueListCount.set(lnumb);
+// get Cues-Number
 	var numb = parse.data[cln].cues.length ;
 	local.values.cueNames.numberOfCues.set(numb);
-	local.values.cuesCount.set(numb);
+//	local.values.cuesCount.set(numb);
 	local.parameters.numberOfCues.set(numb);
-	//  insert CueList Name
+//  insert CueList Name
 	var listname = parse.data[cln].listName ;
 	local.values.cueNames.cueListName.set(listname);
-	//  insert Workspace ID
+//  insert Workspace ID
 	var workspace = parse.workspace_id ;
 	local.values.workspaceID.set(workspace);
 	local.parameters.workspaceID.set(workspace);
 	
-	//  insert Cue Names 
+//  insert Cue Names 
 	for (n=0 ; n<numb ; n++) {
 	var no =n+1 ;	
 		var cuename = parse.data[cln].cues[n].name ;
@@ -214,14 +194,14 @@ function oscEvent(address, args) {
 
 
 //=========================================================
-//		REQUESTS
+//		 REQUESTS
 //=========================================================
 
 
 
 
 //=========================================================
-//		REGULAR FUCNTIONS
+//		 REGULAR FUCNTIONS
 //=========================================================
 
 // >>>>>>> CUE CONTROL
