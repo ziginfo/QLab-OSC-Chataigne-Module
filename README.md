@@ -14,7 +14,7 @@ You can leave the "Permanent-Feedback" deactivated  if you want so. In this case
 Now you can choose what is shown for Cue-Infos (number, name, color etc).     
 Now you can set the Rate for Permanent Feedback. Note that 1 second is already quite good enough; and you may need faster Rates only to get instant Feedback for Time-Infos. Note also that the Playing-Time is referenced to the (underlayed) Audio-File and NOT to the actual "Cue-Time".       
 The parameter CueList-Count shows the number of Q-Labs CueLists in the active Session/Workspace; You can choose which CueList should appear in the Name's-List below; where 0 is reference to the first CueList !   
-In the case you'd have more than one workspace/sessions opened in QLab, it'll be always the Session "Up-to-theFront", taht'll be activated (and shown in Chataigne) !
+In the case you'd have more than one workspace/sessions opened in QLab, it'll be always the Session "Up-to-the-Front", that'll be active (and shown in Chataigne) !
 If Permanent-Feedback is not activated, you must "Sync" the Infos manually after every change of the Cuelist reference !        
 
 I will add some more features in the future...!
