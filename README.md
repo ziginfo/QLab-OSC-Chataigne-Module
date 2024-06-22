@@ -11,7 +11,7 @@ Automatic Feedback is disabled on the first start as this might create conflicts
 You can leave the "Permanent-Feedback" deactivated  if you want so. In this case you will still get Feedback after sending actions and OSC-commands or -requests (Sync etc) to QLab; but changes on QLab itself will not more be reflected in a permanent continuous way in Chataigne !
 
 ### Actual Version is 1.4.2
-Now you can choose what is shon for Cue-Infos (number, name, color etc)   
+Now you can choose what is shown for Cue-Infos (number, name, color etc).     
 Now you can set the Rate for Permanent Feedback. Note that 1 second is already quite good enough; and you may need faster Rates only to get instant Feedback for Time-Infos. Note also that the Playing-Time is reference to the (underlayed) Audio-File and NOT to the actual "Cue-Time".       
 Note that the parameter CueList-Count shows the number of Q-Labs CueList for the active Session/Workspace; You can choose which CueList should appear in the Name's-List below; wher 0 is reference to the first CueList !    
 If Permanent-Feedback is not activated, you must "Sync" the Infos manually after every change of the Cuelist reference !        
