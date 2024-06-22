@@ -6,7 +6,7 @@ You'll find this QLab Module in the Chataigne Module-Menu under "Software" with 
 
 This Module gives extended Remote-Control on QLab. And you'll get Feedback for Cue-Lists, Cue-Names, and Cue-Colors etc etc...     
 As the CueName-Container is handled dynamically (only as much lines as there are Cues in the CueList are created and shown), you may not have immediate Feedback after inserting a new QLab-Module. After the insert you Should save the session and than reload it ! (Shortcuts are cmd-S for Save and cmd-shift-O for Reload !)   
-Automatic Feedback is disabled on the first start as this might g-create conflict with QLab while adding a new Chataigne Module. Once your Chataigne session has been saved, you can than activate the "Permanent-Feedback" Button or just request manually Feddback (by the Sync-Button) when needed.   
+Automatic Feedback is disabled on the first start as this might create conflicts with QLab (running and trying to sync) while adding a new Chataigne Module. Once your Chataigne session has been saved, you can than activate the "Permanent-Feedback" Button or just request manually Feddback (by the Sync-Button) when needed.   
 
 You can leave the "Permanent-Feedback" deactivated  if you want so. In this case you will still get Feedback after sending actions and OSC-commands or -requests (Sync etc) to QLab; but changes on QLab itself will not more be reflected in a permanent continuous way in Chataigne !
 
