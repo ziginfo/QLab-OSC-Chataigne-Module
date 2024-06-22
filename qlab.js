@@ -156,7 +156,7 @@ function oscEvent(address, args) {
 	var parse = JSON.parse(args[0]) ;
 	var numbr = parse.data[1].number ;
 	cueNo = numbr ;
-	var name = parse.data[1].name ;
+	var name = parse.data[1].listName ;
 	cueID = parse.data[1].uniqueID ;
 	liname = numbr+" - "+name ;
 	if (name == null) {liname= "no playing Cue !" ;}
@@ -165,7 +165,7 @@ function oscEvent(address, args) {
 	if (local.match(address,"/reply/workspace/*/selectedCues/shallow")) {
 	var parse = JSON.parse(args[0]) ;
 	var numb = parse.data[0].number ;
-	var name = parse.data[0].name ;
+	var name = parse.data[0].listName ;
 	liname = numb+" - "+name ;
 	if (name == null) {liname= "no selected Cue !" ;}
 	local.values.nextCue.set(liname);
