@@ -201,7 +201,7 @@ function oscEvent(address, args) {
 //  insert Cue Names 
 	for (n=0 ; n<numb ; n++) {
 	var no =n+1 ;	
-		var cuename = parse.data[cln].cues[n].name ;
+		var cuename = parse.data[cln].cues[n].listName ;
 		var cuenumber = parse.data[cln].cues[n].number ;
 		var cuecolor = parse.data[cln].cues[n].colorName ;
 		if (cuecolor == "none") { cuecolor = "" ;}
