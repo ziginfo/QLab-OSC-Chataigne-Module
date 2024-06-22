@@ -12,6 +12,9 @@ var requestsAdr = [];
 var requestsArg = [];
 var wild = "*" ;
 var parse ;
+var cueNo ;
+var cueNamSho = 1 ;
+var fbrate = 2 ;
 
 var cueColors = ["none","berry","blue","crimson","cyan","forest","gray","green","hot pink","indigo","lavender","magenta","midnight","olive","orange","peach","plum","purple","red","sky blue","yellow"] ;
 
@@ -50,9 +53,11 @@ function init() {
 //========================================================================
 
 function update(deltaTime) {
+		
 		var now = util.getTime();
 		if(now > TSSendAlive) {
-			TSSendAlive = now + 2; 
+		var fbrate = local.parameters.setFeedbackRate.get() ;
+			TSSendAlive = now + fbrate ; 
 			keepAlive(); 
 		 } }
 		
@@ -61,6 +66,7 @@ function keepAlive() {
 		local.send ("/cueLists") ;
 		local.send ("/runningCues/shallow") ;
 		local.send ("/selectedCues/shallow") ;
+		local.send ("/cue/"+cueNo+"/currentFileTime") ;
 //		local.send("/cue/selected/name") ;
 //		local.send ("/alwaysReply" ,1) ;
 //		local.send ("/updates" ,1) ;
@@ -87,6 +93,7 @@ function moduleValueChanged(value) {
 	if (value.name == "sync"){
 	local.send ("/runningCues/shallow") ;
 	local.send ("/selectedCues/shallow") ;
+	local.send ("/cue/"+cueNo+"/currentFileTime") ;
 //	local.send ("/alwaysReply" ,1) ;
 //	local.send ("/cueLists") ;
 //	local.send("/cue/selected/name") ;
@@ -147,9 +154,11 @@ function oscEvent(address, args) {
 // >>>>>>>>> Get and Set selected and playing Cue
 	if (local.match(address,"/reply/workspace/*/runningCues/shallow")) {
 	var parse = JSON.parse(args[0]) ;
-	var numb = parse.data[1].number ;
+	var numbr = parse.data[1].number ;
+	cueNo = numbr ;
 	var name = parse.data[1].name ;
-	liname = numb+" - "+name ;
+	cueID = parse.data[1].uniqueID ;
+	liname = numbr+" - "+name ;
 	if (name == null) {liname= "no playing Cue !" ;}
 	local.values.playingCue.set(liname);
 	}
@@ -161,6 +170,10 @@ function oscEvent(address, args) {
 	if (name == null) {liname= "no selected Cue !" ;}
 	local.values.nextCue.set(liname);
 	}
+	if (local.match(address,"/reply/cue/"+cueNo+"/currentFileTime")) {
+	var parse = JSON.parse(args[0]) ;
+	var time = parse.data ;
+	local.values.playingTime.set(time); }
 		
 // >>>>>>> Get and Set  Cue Infos
 	if (local.match(address,"/reply/workspace/*/cueLists")) {	
@@ -192,8 +205,14 @@ function oscEvent(address, args) {
 		var cuenumber = parse.data[cln].cues[n].number ;
 		var cuecolor = parse.data[cln].cues[n].colorName ;
 		if (cuecolor == "none") { cuecolor = "" ;}
-		else {cuecolor = " - "+cuecolor ;}
-		var fullname = cuenumber+" - "+cuename +cuecolor ;	
+		else {cuecolor = "    "+cuecolor ;}
+		cueNamSho = local.values.cueNames.cueNameShows.get() ;
+		if (cueNamSho == 1){
+		var fullname = cuenumber+" - "+cuename +cuecolor ;}
+		else if (cueNamSho == 2) {fullname = cuename ;}
+		else if (cueNamSho == 3) {fullname = cuenumber ;}
+		else if (cueNamSho == 4) {fullname = cuecolor ;}
+			
 		local.values.cueNames.getChild("cue"+no).set(fullname);}
 	}
 

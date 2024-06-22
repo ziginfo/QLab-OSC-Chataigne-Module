@@ -10,7 +10,10 @@ Automatic Feedback is disabled on the first start as this might g-create conflic
 
 You can leave the "Permanent-Feedback" deactivated  if you want so. In this case you will still get Feedback after sending actions and commands or requests (Sync etc) to QLab; but changes on QLab itself will not more be reflected in a permanent continuous way in Chataigne !
 
-### Actual Version is 1.4
+### Actual Version is 1.4.2
+Now you can choose what is shon for Cue-Infos (number, name, color etc)   
+Now you can set the Rate for Permanent Feedback. Note that 1 second is already quite good enough; and you may need faster Rates only to get instant Feedback for Time-Infos. Note also that the Playing-Time is reference to the (underlayed) Audio-File and NOT to the actual "Cue-Time".     
+
 I will add some more features in the future...!
 
 There is already a QLab Module integrated in Chataigne (under the Software-Menu), but without Feedback-Features ! If you don't need Feedback, use the Basic-Module instead. It'll be easier to work with!

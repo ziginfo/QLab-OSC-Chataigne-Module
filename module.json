@@ -60,7 +60,20 @@
 			{
 				"type":"Integer",
 				"description":"Count of Cues"
-			}
+			},
+			"Set Feedback Rate": {
+				"type":"Enum",
+				"description": "Select the Update Rate for constant Feedback",
+				"options": {
+				"medium (2sec)": 2,
+				"once/min": 60,
+            	"very slow (15sec)": 15,
+            	"slow (5sec)": 5,            	
+            	"normal (1sec)": 1,
+            	"fast (0,5sec)": 0.5,
+            	"faster (0.2sec)": 0.2,
+            	"very fast (0,1sec)": 0.1 ,
+            	"max speed ": 0  }  }
 			
 	},
 	
@@ -71,6 +84,10 @@
 				"type":"String",
 				"default":"Workspace ID",
 				"description":"Set the Workspace ID or Name"  },
+			"Playing Time": {
+				"type":"Float",
+				"readOnly": true, 
+				"ui":"time"  },
 			"Playing Cue": {
 				"type":"String",
 				"description":"Shows the Active Cue Name",
@@ -110,7 +127,18 @@
 			"   ": {
 				"type":"String",
 				"default":"Cue Names",
-				"readOnly": true }	
+				"readOnly": true },	
+			"Cue Name Shows": {
+				"type":"Enum",
+				"description": "Select what the Name-Field should show !",
+				"default": 1 ,
+				"options": {
+				"Number-Name-Color": 1 ,
+				"Name Only": 2 ,
+                "Number Only": 3 ,
+                "Color Only": 4,
+                "default": 1   }  }
+			
 			}
 			
 			
