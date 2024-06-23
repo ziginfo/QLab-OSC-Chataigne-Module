@@ -3,7 +3,7 @@
 	"type": "OSC",
 	"path": "Software",
 	
-	"version":"1.4",
+	"version":"1.4.2",
   "description":"Allows you to control QLab with Chataigne",
   "url":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module",
   "downloadURL":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module/archive/refs/heads/main.zip",
@@ -37,30 +37,29 @@
 	},
 	
 	"parameters": {
+			
 			"Advice":
-			{ "type": "String",
-			"multiline" : true,
-			"readOnly" : true , 
-			"description":"After you've inserted a new QLab-Module or  loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !",
-			"default":"After you've inserted a new QLab-Module or when loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !" },
-				
-			"Workspace ID":
-			{
+				{ "type": "String",
+				"multiline" : true,
+				"readOnly" : true , 
+				"description":"After you've inserted a new QLab-Module or  loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !",
+				"default":"After you've inserted a new QLab-Module or when loading a new QLab-Session (Workspace), please do a \"Sync\" first and than 'Save' the Session (cmd-S) and 'Reload' it again (cmd-shift-O) !" },	
+			"Workspace ID": {
 				"type":"String",
 				"readOnly": true ,
 				"default":"Workspace ID",
-				"description":"Set the Workspace ID or Name" 
-			},
-			"Number of CueLists":
-			{
+				"description":"Set the Workspace ID or Name"  },
+			"Workspace Name": {
+				"type":"String",
+				"readOnly" : true , 
+				"default":"Workspace Name",
+				"description":"Shows the Workspace  Name"  },
+			"Count of CueLists": {
 				"type":"Integer",
-				"description":"Count of CueLists"
-			},
-			"Number of Cues":
-			{
+				"description":"Count of CueLists" },
+			"Count of Cues": {
 				"type":"Integer",
-				"description":"Count of Cues"
-			},
+				"description":"Count of Cues" },
 			"Set Feedback Rate": {
 				"type":"Enum",
 				"description": "Select the Update Rate for constant Feedback",
@@ -83,7 +82,11 @@
 			"Workspace ID": {
 				"type":"String",
 				"default":"Workspace ID",
-				"description":"Set the Workspace ID or Name"  },
+				"description":"Shows the Workspace ID or Name"  },
+			"Workspace Name": {
+				"type":"String",
+				"default":"Workspace Name",
+				"description":"Shows the Workspace  Name"  },
 			"Playing Time": {
 				"type":"Float",
 				"readOnly": true, 
@@ -103,6 +106,7 @@
 				
 			"Cue Names": {
 				"type":"Container",
+				"collapsed": true,
 			"Advice": {
 				"type":"String",
 				"default":"If no Cues showing, please Sync the Cue Name List.",
@@ -111,7 +115,7 @@
 				"type":"Trigger",
 				"description":"Syncing Cue Names",
 				"default": false },
-			"Number of Cues": {
+			"Count of Cues": {
 				"type":"Integer",
 				"description":"Count of Cues" },
 			"Count of CueLists": {
@@ -130,29 +134,77 @@
 				"readOnly": true },	
 			"Cue Name Shows": {
 				"type":"Enum",
+                "default": 2,   
 				"description": "Select what the Name-Field should show !",
 				"default": 1 ,
 				"options": {
-				"Number-Name-Color": 1 ,
 				"Name Only": 2 ,
+				"Number-Name-Color": 1 ,				
                 "Number Only": 3 ,
-                "Color Only": 4,
-                "default": 1   }  }
+                "Color Only": 4 }  }	 },
 			
-			}
-			
-			
+			"Cue Infos": {
+				"type":"Container",
+				"collapsed": true ,
+			"  ": {
+				"type":"String",
+				"description":"Set the Cue N° and hit Enter !" ,
+				"default":"Set the Cue N° and hit Enter !" ,
+				"readOnly": true  },
+			"Cue Number": {
+				"type":"String",
+				"description":"Set the Cue Number",
+				"default":"Set the Cue Number" } ,
+			"Cue Name": {
+				"type":"String",
+				"description":"Shows the Selected Cue Name",
+				"default":"Cue Name" },
+			"Cue Duration": {
+				"type":"Float",
+				"description":"Shows the Cue's Duration",
+				"ui": "time" ,
+				"readOnly" : true },
+			"Notes": {
+				"type":"String",
+				"multiline" : true,
+				"readOnly" : true ,
+				"description":"Shows the Notes of the Selected Cue",
+				"default":"Shows the Notes of the Selected Cue",
+				"readOnly": true },
+			"Cue Color": {
+				"type":"Color",
+				"description":"Shows the Cue Color"  ,
+				"readOnly" : true } 
+			 
+				
+				}
+				
 	 },
 	
 	
 	
-	"commands": {
+"commands": {
 	
-	"Show Playing" : {
+	"Main Controls" : {
 			"menu" : "Main Control",
-			"callback" : "show_playing"
-		},
-		
+			"callback" : "main_control",
+			"parameters" : {
+
+			"Set Control": {
+					"type": "Enum",
+					"options": {
+					"Go": "/go",
+					"Pause": "/pause",
+					"Continue" : "/resume",
+					"Stop" : "/stop",
+					"Next" : "/playhead/next",
+					"Previous" : "/playhead/previous",
+					"Start Next" : "/startAndAutoloadNext",
+					"Panic" : "/panic",
+					"Panic in Time" : "/panicInTime" ,
+					"Reset CueList" : "/reset"  }	}						
+		}  },
+			
 	"Go" : {
 			"menu" : "Main Control",
 			"callback" : "go"
@@ -166,17 +218,7 @@
 	"Continue" : {
 			"menu" : "Main Control",
 			"callback" : "resume"
-		},
-		
-	"Stop Cue" : {
-			"menu" : "Main Control",
-			"callback" : "stop_cue",
-			"parameters" : {
-			
-			" Stop Cue No": {
-					"type": "String",
-					"useForMapping": true }						
-		}  },	
+		},		
 		
 	"Previous Cue" : {
 			"menu" : "Main Control",
@@ -186,7 +228,18 @@
 	"Next Cue" : {
 			"menu" : "Main Control",
 			"callback" : "next"
-		},
+		},	
+		
+	"Set Next CueN°" : {
+			"menu" : "Main Control",
+			"callback" : "set_next",
+			"parameters" : {
+			
+			" Set Cue No": {
+					"type": "String",
+					"default": "Set Cue N°" ,
+					"useForMapping": true }						
+		}  },
 		
 	"Stop Playlist" : {
 			"menu" : "Main Control",
@@ -203,12 +256,11 @@
 			"callback" : "stop_intime",
 			"parameters" : {
 			
-			" Load Cue No": {
+			"Set Fade Time": {
 					"type": "Float",
 					"ui": "time" ,
-					"useForMapping": true }						
-		}
-		},			
+					"useForMapping": true }	 
+		} },			
 				
 	"Load Cue" : {
 			"menu" : "Main Control",
@@ -218,62 +270,8 @@
 			" Load Cue No": {
 					"type": "String",
 					"useForMapping": true }						
-		}  },	
-		
-	"Start Cue" : {
-			"menu" : "Main Control",
-			"callback" : "start_next",
-			"parameters" : {
-			
-			" Start Cue No": {
-					"type": "String",
-					"useForMapping": true }						
 		}  },
 		
-	"Rename Cue" : {
-			"menu" : "Cue Basics",
-			"callback" : "rename_cue",
-			"parameters" : {
-			
-			"Cue Number": {
-					"type": "String",
-					"useForMapping": true },
-			"New Name": {
-					"type": "String",
-					"useForMapping": true }						
-		}  },
-		
-	"Reumber Cue" : {
-			"menu" : "Cue Basics",
-			"callback" : "renumber_cue",
-			"parameters" : {
-			
-			"Cue Number": {
-					"type": "String",
-					"useForMapping": true },
-			"New Number": {
-					"type": "String",
-					"useForMapping": true }						
-		}  },
-		
-	"Renumber All Cues" : {
-			"menu" : "Cue Basics",
-			"callback" : "renumber_allcues",
-			"parameters" : {
-			
-			"Start Number": {
-					"type": "Integer",
-					"default": 1, 
-					"min":1,
-					"useForMapping": true },
-					
-			"Increment Number": {
-					"type": "Integer",
-					"default": 1, 
-					"min":1,
-					"useForMapping": true }					
-		}  },
-				
 	"Reset Playlist" : {
 			"menu" : "Main Control",
 			"callback" : "reset"
@@ -289,7 +287,6 @@
 					"ui":"time",
 					"default": 0, 
 					"min":0,
-					"max":15,
 					"useForMapping": true } 
 			}  },
 			
@@ -303,27 +300,345 @@
 					"ui":"time",
 					"default": 0, 
 					"min":0,
-					"max":15,
 					"useForMapping": true } 
-			}  },
+			}  },		
+		
+	"Set Play Actions" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_set",
+			"parameters" : {
+			
+			"Set Cue No": {
+					"type": "String",
+					"default": "Set Cue N°" ,
+					"useForMapping": true },
+					
+			"Set Action": {
+					"type": "Enum",
+					"options": {
+					"Start": "/go",
+					"Pause": "/pause",
+					"Resume" : "/resume",
+					"Toggle Pause": "/togglePause",
+					"Stop" : "/stop",
+					"Set Next" : "/loadAndSetPlayhead",
+					"Start Next" : "/startAndAutoloadNext",
+					"Preview" : "/preview",
+					"Load" : "/load",
+					"Arm" : "/arm"  }	}						
+		}  },
+		
+	"Cue Go" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_go",
+			"parameters" : {
+			
+			"Play Cue No": {
+					"type": "String",
+					"default": "Set Cue N°" ,
+					"useForMapping": true }						
+		}  },
+		
+		
+	"Cue Pause" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_pause",
+			"parameters" : {
+			
+			"Pause Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Resume" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_resume",
+			"parameters" : {
+			
+			"Continue Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Stop" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_stop",
+			"parameters" : {
+			
+			"Stop Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Load Next Cue" : {
+			"menu" : "Cue Play",
+			"callback" : "setload",
+			"parameters" : {
+			
+			"Load Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Set Next Cue" : {
+			"menu" : "Cue Play",
+			"callback" : "set_next",
+			"parameters" : {
+			
+			"Set Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Start Next Cue" : {
+			"menu" : "Cue Play",
+			"callback" : "start_next",
+			"parameters" : {
+			
+			"Start Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Preview Cue" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_preview",
+			"parameters" : {
+			
+			"Start Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Load" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_load",
+			"parameters" : {
+			
+			"Continue Cue No": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Pre Wait" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_prewait",
+			"parameters" : {
+			
+			"Set Cue No": {
+					"type": "String",
+					"default": "Set Cue No",
+					"useForMapping": true },
+					
+			"Pre Wait Time": {
+					"type": "Float",
+					"ui": "time",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Post Wait" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_postwait",
+			"parameters" : {
+			
+			"Cue No": {
+					"type": "String",
+					"default": "Set Cue No",
+					"useForMapping": true },
+					
+			"Post Wait Time": {
+					"type": "Float",
+					"ui": "time",
+					"useForMapping": true }						
+		}  },
+		
+	"Cue Load at Time" : {
+			"menu" : "Cue Play",
+			"callback" : "cue_timeload",
+			"parameters" : {
+			
+			"Cue No": {
+					"type": "String",
+					"default": "Set Cue No",
+					"useForMapping": true },
+					
+			"Load Time": {
+					"type": "Float",
+					"ui": "time",
+					"useForMapping": true }						
+		}  },
+			
+	"Set Cue Name" : {
+			"menu" : "Cue Actions",
+			"callback" : "rename_cue",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"default": "Set Cue No",
+					"useForMapping": true },
+			"New Name": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Set Cue Notes" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_notes",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Notes": {
+					"type": "String",
+					"multiline": true,
+					"useForMapping": true }						
+		}  },
+		
+	"Set Cue Color" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_color",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Choose Color": {
+					"type": "Enum",
+					"options": {
+					"none" : "none",
+					"red" : "red",
+					"orange" : "orange",
+					"green" : "green",
+					"blue" : "blue",
+					"yellow" : "yellow",
+					"purple" : "purple",
+					"sky blue" : "skyblue"  }	}					
+		} },
+		
+	"Set Duration" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_duration",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Set Duration": {
+					"type": "Float",
+					"ui": "time",
+					"useForMapping": true }						
+		}  },
+		
+	"Flag Cue" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_flagged",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Flagged": {
+					"type": "Boolean",
+					"default": 1 ,
+					"useForMapping": true }						
+		}  },
+		
+	"AutoLoad Cue" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_autoload",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"AutoLoad": {
+					"type": "Boolean",
+					"default": 1 ,
+					"useForMapping": true }						
+		}  },
+		
+		
+	"Renumber Cue" : {
+			"menu" : "Cue Actions",
+			"callback" : "renumber_cue",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"New Number": {
+					"type": "String",
+					"useForMapping": true }						
+		}  },
+		
+	"Renumber All Cues" : {
+			"menu" : "Cue Actions",
+			"callback" : "renumber_allcues",
+			"parameters" : {
+			
+			"Start Number": {
+					"type": "Integer",
+					"default": 1, 
+					"min":1,
+					"useForMapping": true },
+					
+			"Increment Number": {
+					"type": "Integer",
+					"default": 1, 
+					"min":1,
+					"useForMapping": true }					
+		}  },
+		
+	"Set Continue Mode" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_continue",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Set the Mode": {
+					"type": "Enum",
+					"options": {
+					"No Continue" : 0,
+					"Auto Continue" : 1,
+					"Auto Follow" : 2 }	}					
+		} },
+		
+	"Set Target" : {
+			"menu" : "Cue Actions",
+			"callback" : "cue_target",
+			"parameters" : {
+			
+			"Cue Number": {
+					"type": "String",
+					"useForMapping": true },
+			"Set Target Cue No": {
+					"type": "String",
+					"useForMapping": true }					
+		} },
+		
+	
 		
 	"Playing Cue" : {
-			"menu" : "Cue Basics",
+			"menu" : "Cue Feedback",
 			"callback" : "active_cue"
 		},
 		
 	"Selected Cue" : {
-			"menu" : "Cue Basics",
+			"menu" : "Cue Feedback",
 			"callback" : "selected_cue"
 		},
 		
 	"Playhead Cue" : {
-			"menu" : "Cue Basics",
+			"menu" : "Cue Feedback",
 			"callback" : "playhead_cue"
 		},
 		
 	"Active & Next Cue" : {
-			"menu" : "Cue Basics",
+			"menu" : "Cue Feedback",
 			"callback" : "request_activecue"
 		},
 		
@@ -355,7 +670,12 @@
 			"menu" : "Volume",
 			"callback" : "actVol_full"
 		},
-		
+	
+	"Show Playing" : {
+			"menu" : "Requests",
+			"callback" : "show_playing"
+		},
+			
 	"Request Cue Names" : {
 			"menu" : "Requests",
 			"callback" : "request_names"
@@ -374,6 +694,16 @@
 	"Request Unique IDs" : {
 			"menu" : "Requests",
 			"callback" : "request_uniqueids"
+		},
+		
+	"Request QLab Version" : {
+			"menu" : "Requests",
+			"callback" : "version"
+		},
+		
+	"Request Workspaces" : {
+			"menu" : "Requests",
+			"callback" : "workspaces"
 		},	
 					
 	"Reply Always" : {
@@ -398,7 +728,127 @@
 					"options": {
 						"Start" : 1,
 						"Stop" : 0 } }
-			}   }
+			}   },
+			
+	"Midi-In Toggle" : {
+			"menu" : "Actions",
+			"callback" : "midiin_toggle"
+		},
+		
+	"Midi-Out Toggle" : {
+			"menu" : "Actions",
+			"callback" : "midiout_toggle"
+		},
+
+	"Midi-In Enable" : {
+			"menu" : "Actions",
+			"callback" : "midiin_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true } 
+		} },
+		
+	"Midi-Out Enable" : {
+			"menu" : "Actions",
+			"callback" : "midiout_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true }
+		} },
+		
+	"DMX Toggle" : {
+			"menu" : "Actions",
+			"callback" : "dmx_toggle"
+		},
+
+	"DMX Enable" : {
+			"menu" : "Actions",
+			"callback" : "dmx_enable",
+			"parameters" : {
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true }
+		} },
+		
+	"MSC-In Toggle" : {
+			"menu" : "Actions",
+			"callback" : "mscin_toggle"
+		},
+		
+	"MSC-Out Toggle" : {
+			"menu" : "Actions",
+			"callback" : "mscout_toggle"
+		},
+
+	"MSC-In Enable" : {
+			"menu" : "Actions",
+			"callback" : "mscin_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true } 
+		} },
+		
+	"MSC-Out Enable" : {
+			"menu" : "Actions",
+			"callback" : "mscout_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true }
+		} },
+		
+	"SysEx-In Toggle" : {
+			"menu" : "Actions",
+			"callback" : "sysexin_toggle"
+		},
+		
+	"SysEx-Out Toggle" : {
+			"menu" : "Actions",
+			"callback" : "sysexout_toggle"
+		},
+
+	"SysEx-In Enable" : {
+			"menu" : "Actions",
+			"callback" : "sysexin_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true } 
+		} },
+		
+	"SysEx-Out Enable" : {
+			"menu" : "Actions",
+			"callback" : "sysexout_enable",
+			"parameters" : {	
+				"Enable": {
+					"type": "Boolean",
+					"default": 1,
+					"useForMapping": true } 
+		} },
+			
+
+	"Toggle Override Window" : {
+			"menu" : "Actions",
+			"callback" : "toggle_override"
+		},
+		
+	"Toggle Timecode Window" : {
+			"menu" : "Actions",
+			"callback" : "toggle_timecode"
+		}
+
+
+
+
 
 	
 	}
