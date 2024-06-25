@@ -4,7 +4,7 @@
 	"path": "Software",
 	
 	"version":"1.4.2",
-  "description":"Allows you to control QLab with Chataigne",
+  "description":"OSC-Control and Feedback for QLab with Chataigne",
   "url":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module",
   "downloadURL":"https://github.com/ziginfo/QLab-OSC-Chataigne-Module/archive/refs/heads/main.zip",
 	
